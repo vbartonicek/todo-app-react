@@ -1,12 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import styled from 'styled-components';
-import update from 'immutability-helper';
 import TodoItem from './TodoItem';
-import NewTodoForm from './NewTodoForm';
+import NewItemForm from './NewItemForm';
 import FilterSelect from './FilterSelect';
-import {Set} from "immutable";
+import {Set, List, Map} from "immutable";
 
 const StyledTodos = styled.div`
     background: white;
@@ -39,7 +37,7 @@ class Todos extends React.PureComponent {
         super(props);
 
         this.state = {
-            todoItems: props.todoItems || [],
+            todoItems: props.todoItems || List(),
             categories: props.categoryItems || Set([]),
             activeCategory: ''
         };
@@ -49,46 +47,46 @@ class Todos extends React.PureComponent {
         this.handleFilterChange = this.handleFilterChange.bind(this);
     }
 
-    handleItemChange(key, newValue) {
-        const data = this.state.todoItems;
-        const itemIndex = data.findIndex(function (c) {
-            return c.key === key;
-        });
+    // Handle todo's item change (checkbox value)
+    handleItemChange(id, newValue) {
+        const {todoItems} = this.state;
 
-        const updatedItem = update(data[itemIndex], {checked: {$set: newValue}});
-        const newData = update(data, {
-            $splice: [[itemIndex, 1, updatedItem]]
-        });
+        const updatedTodoItems = todoItems.update(
+            todoItems.findIndex(function (item) {
+                return item.get("id") === id;
+            }), function (item) {
+                return item.set("checked", newValue);
+            }
+        );
 
-        this.setState({todoItems: newData});
+        this.setState({todoItems: updatedTodoItems});
     }
 
+    // Handle adding new todo item
     handleNewItem(task, category) {
-        const {categories} = this.state;
-
+        const {categories, todoItems} = this.state;
         const updatedCategories = categories.add(category);
-
-        const newTodoItem = {
-            id: 'd',
+        const newTodoItem = Map({
+            id: todoItems.size ? todoItems.last().get('id') + 1 : 0,
             text: task,
-            category,
-            checked: false,
-        }
+            category: category,
+            checked: false
+        });
+        const updatedTodoItems = todoItems.push(newTodoItem);
 
-
-        let todoItems = [...this.state.todoItems];
-        todoItems.push(newTodoItem);
-        this.setState({todoItems, categories: updatedCategories});
+        this.setState({todoItems: updatedTodoItems, categories: updatedCategories});
     }
 
+    // Handle filter change
     handleFilterChange = (selectedOption) => {
         this.setState({activeCategory: selectedOption?.value});
     }
 
+    // Filter list of todo items based on active category filter
     filterTodos(allTodoItems, selectedCategory) {
         if (!selectedCategory) return allTodoItems;
         return allTodoItems.filter(function (item) {
-            return item.category === selectedCategory
+            return item.get('category') === selectedCategory
         });
     }
 
@@ -99,11 +97,11 @@ class Todos extends React.PureComponent {
         return (
             <StyledTodos>
                 <LeftWrapper>
-                    {!filteredTodos.length && <StyledDiv>No Todos available</StyledDiv>}
+                    {!filteredTodos.size && <StyledDiv>No Todos available</StyledDiv>}
                     {filteredTodos?.map((item) => (
-                        <TodoItem key={item.key} item={item} handleItemChange={this.handleItemChange}/>
+                        <TodoItem key={item.get('id')} item={item} handleItemChange={this.handleItemChange}/>
                     ))}
-                    <NewTodoForm handleSubmit={this.handleNewItem}/>
+                    <NewItemForm handleSubmit={this.handleNewItem}/>
                 </LeftWrapper>
                 <RightWrapper>
                     <FilterSelect categories={categories} activeCategory={activeCategory}
@@ -115,7 +113,7 @@ class Todos extends React.PureComponent {
 }
 
 Todos.propTypes = {
-    todoItems: PropTypes.arrayOf(PropTypes.object),
+    todoItems: ImmutablePropTypes.list,
     categoryItems: ImmutablePropTypes.set,
 };
 

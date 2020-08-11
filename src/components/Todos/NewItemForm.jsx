@@ -9,7 +9,10 @@ const StyledForm = styled.form`
   background: white;
   position: relative;
   padding-right: 2rem;
-
+  padding: 1rem 2rem 0 0;
+  margin-top: 1rem;
+  border-top: 1px solid #e4e4e4;
+  background: none;
 
   input {
     padding: 0.5rem;
@@ -23,7 +26,7 @@ const StyledForm = styled.form`
     border: none;
     position: absolute;
     right: 0;
-    height: 100%;
+    height: calc(100% - 1rem);
     width: 2rem;
     cursor: pointer;
     background: #5846F6;
@@ -32,10 +35,14 @@ const StyledForm = styled.form`
     &:hover{
         background: #4636C5
     }
+
+    &:focus {
+        outline:0;
+    }
   }
 `;
 
-class NewTodoForm extends React.PureComponent {
+class NewItemForm extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -47,6 +54,7 @@ class NewTodoForm extends React.PureComponent {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    // Handle any input field change
     handleChange(event) {
         const target = event.target;
         const state = this.state;
@@ -54,6 +62,7 @@ class NewTodoForm extends React.PureComponent {
         this.setState({state});
     }
 
+    // Handle form's submit
     handleSubmit(event) {
         event.preventDefault();
         const target = event.target;
@@ -83,8 +92,8 @@ class NewTodoForm extends React.PureComponent {
     }
 }
 
-NewTodoForm.propTypes = {
+NewItemForm.propTypes = {
     handleSubmit: PropTypes.func,
 };
 
-export default NewTodoForm;
+export default NewItemForm;
