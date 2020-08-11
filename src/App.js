@@ -1,18 +1,17 @@
 import React from 'react';
 import Todos from './components/Todos/index';
-import {categoryItems, todoItems} from './data/todos';
 import GlobalStyles from './globalStyles';
+import { Provider } from 'react-redux';
+import { TodoStore } from './store/store';
 
 function App() {
     return (
         <div className="App">
             <GlobalStyles/>
-            <header className="App-header">
+            <Provider store={TodoStore}>
                 <h1>Instance 1 (initial data from the assigment)</h1>
-                <Todos categoryItems={categoryItems} todoItems={todoItems}/>
-                <h1>Instance 2 (no initial data)</h1>
-                <Todos/>
-            </header>
+                <Todos />
+            </Provider>
         </div>
     );
 }

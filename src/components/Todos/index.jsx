@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import TodoItem from './TodoItem';
 import NewItemForm from './NewItemForm';
 import FilterSelect from './FilterSelect';
-import {Set, List, Map} from "immutable";
+import {connect} from 'react-redux';
+import PropTypes from "prop-types";
 
 const StyledTodos = styled.div`
     background: white;
@@ -32,89 +33,39 @@ const StyledDiv = styled.div`
     color: grey;
 `;
 
-class Todos extends React.PureComponent {
-    constructor(props) {
-        super(props);
+// Filter list of todo items based on active category filter
+function filterTodos(allTodoItems, selectedCategory) {
+    if (!selectedCategory) return allTodoItems;
+    return allTodoItems.filter(function (item) {
+        return item.get('category') === selectedCategory
+    });
+}
 
-        this.state = {
-            todoItems: props.todoItems || List(),
-            categories: props.categoryItems || Set([]),
-            activeCategory: ''
-        };
+const Todos = ({todoItems, activeCategory}) => {
+    const filteredTodos = filterTodos(todoItems, activeCategory);
 
-        this.handleItemChange = this.handleItemChange.bind(this);
-        this.handleNewItem = this.handleNewItem.bind(this);
-        this.handleFilterChange = this.handleFilterChange.bind(this);
-    }
-
-    // Handle todo's item change (checkbox value)
-    handleItemChange(id, newValue) {
-        const {todoItems} = this.state;
-
-        const updatedTodoItems = todoItems.update(
-            todoItems.findIndex(function (item) {
-                return item.get("id") === id;
-            }), function (item) {
-                return item.set("checked", newValue);
-            }
-        );
-
-        this.setState({todoItems: updatedTodoItems});
-    }
-
-    // Handle adding new todo item
-    handleNewItem(task, category) {
-        const {categories, todoItems} = this.state;
-        const updatedCategories = categories.add(category);
-        const newTodoItem = Map({
-            id: todoItems.size ? todoItems.last().get('id') + 1 : 0,
-            text: task,
-            category: category,
-            checked: false
-        });
-        const updatedTodoItems = todoItems.push(newTodoItem);
-
-        this.setState({todoItems: updatedTodoItems, categories: updatedCategories});
-    }
-
-    // Handle filter change
-    handleFilterChange = (selectedOption) => {
-        this.setState({activeCategory: selectedOption?.value});
-    }
-
-    // Filter list of todo items based on active category filter
-    filterTodos(allTodoItems, selectedCategory) {
-        if (!selectedCategory) return allTodoItems;
-        return allTodoItems.filter(function (item) {
-            return item.get('category') === selectedCategory
-        });
-    }
-
-    render() {
-        const {todoItems, categories, activeCategory} = this.state;
-        const filteredTodos = this.filterTodos(todoItems, activeCategory);
-
-        return (
-            <StyledTodos>
-                <LeftWrapper>
-                    {!filteredTodos.size && <StyledDiv>No Todos available</StyledDiv>}
-                    {filteredTodos?.map((item) => (
-                        <TodoItem key={item.get('id')} item={item} handleItemChange={this.handleItemChange}/>
-                    ))}
-                    <NewItemForm handleSubmit={this.handleNewItem}/>
-                </LeftWrapper>
-                <RightWrapper>
-                    <FilterSelect categories={categories} activeCategory={activeCategory}
-                                  handleFilterChange={this.handleFilterChange}/>
-                </RightWrapper>
-            </StyledTodos>
-        );
-    }
+    return(
+        <StyledTodos>
+            <LeftWrapper>
+                {!filteredTodos.size && <StyledDiv>No Todos available</StyledDiv>}
+                {filteredTodos?.map((item) => (
+                    <TodoItem key={item.get('id')} item={item}/>
+                ))}
+                <NewItemForm/>
+            </LeftWrapper>
+            <RightWrapper>
+                <FilterSelect />
+            </RightWrapper>
+        </StyledTodos>
+    )
 }
 
 Todos.propTypes = {
     todoItems: ImmutablePropTypes.list,
-    categoryItems: ImmutablePropTypes.set,
+    activeCategory: PropTypes.string,
 };
 
-export default Todos;
+
+export default connect(
+    ({todos, activeCategory}) => ({todoItems: todos, activeCategory: activeCategory}),
+)(Todos);

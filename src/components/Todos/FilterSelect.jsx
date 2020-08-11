@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Select from "react-select";
 import styled from "styled-components";
 import ImmutablePropTypes from "react-immutable-proptypes";
+import {connect} from "react-redux";
+import {setActiveCategory} from "../../actions/actions";
 
 const StyledSelect = styled(Select)`
     min-width: 15rem;
@@ -22,13 +24,13 @@ const customStyles = {
 };
 
 function FilterSelect(props) {
-    const {categories, activeCategory, handleFilterChange} = props;
+    const {categories, activeCategory, setActiveCategory} = props;
 
     // React-select requires array of <label:string, value:string>
     const options = [];
 
     categories && categories.map(item => {
-        options.push({label: item, value: item})
+        return options.push({label: item, value: item})
     });
 
     // Prepare active category into required <label:string, value:string> format
@@ -43,7 +45,7 @@ function FilterSelect(props) {
             value={activeValue}
             required={false}
             isDisabled={!categories.size}
-            onChange={handleFilterChange}
+            onChange={setActiveCategory}
             options={options}
             searchable={false}
             isClearable={true}
@@ -56,7 +58,12 @@ function FilterSelect(props) {
 FilterSelect.propTypes = {
     categories: ImmutablePropTypes.set,
     activeCategory: PropTypes.string,
-    handleFilterChange: PropTypes.func,
+    setActiveCategory: PropTypes.func,
 };
 
-export default FilterSelect;
+export default connect(
+    ({categories, activeCategory}) => ({categories: categories, activeCategory: activeCategory}),
+    (dispatch) => ({
+            setActiveCategory: (activeCategory) => dispatch(setActiveCategory(activeCategory))
+    })
+)(FilterSelect);

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import {connect} from 'react-redux';
+import {addItem, addCategory} from '../../actions/actions';
 
 const StyledForm = styled.form`
   display: flex;
@@ -76,7 +78,8 @@ class NewItemForm extends React.PureComponent {
             category: ''
         });
 
-        this.props.handleSubmit(task, category);
+        this.props.addItem(task, category);
+        this.props.addCategory(category);
     }
 
     render() {
@@ -93,7 +96,14 @@ class NewItemForm extends React.PureComponent {
 }
 
 NewItemForm.propTypes = {
-    handleSubmit: PropTypes.func,
+    addItem: PropTypes.func.isRequired,
+    addCategory: PropTypes.func.isRequired,
 };
 
-export default NewItemForm;
+export default connect(
+    () => ({}),
+    (dispatch) => ({
+        addItem: (task, category) => dispatch(addItem(task, category)),
+        addCategory: (category) => dispatch(addCategory(category))
+    }),
+)(NewItemForm);

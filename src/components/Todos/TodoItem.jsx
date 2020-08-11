@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import {connect} from "react-redux";
+import {toggleItem} from "../../actions/actions";
 
 const StyledItem = styled.div`
   display: flex;
@@ -37,12 +39,12 @@ const StyledTaskLabel = styled.span`
 `;
 
 function TodoItem(props) {
-    const {item, handleItemChange} = props;
+    const {item, toggleItem} = props;
 
     return (
         <StyledItem>
             <input type="checkbox" checked={item.get('checked')}
-                   onChange={() => handleItemChange(item.get('id'), !item.get('checked'))}/>
+                   onChange={() => toggleItem(item.get('id'), !item.get('checked'))}/>
             <StyledTaskLabel>{item.get('text')}</StyledTaskLabel>
             <StyledCategoryLabel>{item.get('category')}</StyledCategoryLabel>
         </StyledItem>
@@ -51,7 +53,12 @@ function TodoItem(props) {
 
 TodoItem.propTypes = {
     item: PropTypes.object,
-    handleItemChange: PropTypes.func,
+    toggleItem: PropTypes.func.isRequired,
 };
 
-export default TodoItem;
+export default connect(
+    () => ({}),
+    (dispatch) => ({
+        toggleItem: (id, checked) => dispatch(toggleItem(id, checked))
+    }),
+)(TodoItem);
