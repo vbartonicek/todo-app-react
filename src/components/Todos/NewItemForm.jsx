@@ -93,7 +93,7 @@ class NewItemForm extends React.PureComponent {
 }
 
 NewItemForm.propTypes = {
-    handleSubmit: PropTypes.func,
+    handleSubmit: PropTypes.func.isRequired,
 };
 
 export default NewItemForm;

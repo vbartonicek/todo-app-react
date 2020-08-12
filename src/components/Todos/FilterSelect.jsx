@@ -28,7 +28,7 @@ function FilterSelect(props) {
     const options = [];
 
     categories && categories.map(item => {
-        options.push({label: item, value: item})
+        return options.push({label: item, value: item})
     });
 
     // Prepare active category into required <label:string, value:string> format
@@ -56,7 +56,7 @@ function FilterSelect(props) {
 FilterSelect.propTypes = {
     categories: ImmutablePropTypes.set,
     activeCategory: PropTypes.string,
-    handleFilterChange: PropTypes.func,
+    handleFilterChange: PropTypes.func.isRequired,
 };
 
 export default FilterSelect;

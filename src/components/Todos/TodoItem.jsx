@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 
 const StyledItem = styled.div`
   display: flex;
@@ -50,8 +51,8 @@ function TodoItem(props) {
 }
 
 TodoItem.propTypes = {
-    item: PropTypes.object,
-    handleItemChange: PropTypes.func,
+    item: ImmutablePropTypes.map.isRequired,
+    handleItemChange: PropTypes.func.isRequired,
 };
 
 export default TodoItem;
