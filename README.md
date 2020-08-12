@@ -12,7 +12,6 @@ The initial data are located and documented in /src/data.
 
 The projects consist of two instances:
 - Instance 1 (initial data from the assignment)
-- Instance 2 (empty instance without initial data)
 
 ## Project structure
 
@@ -41,7 +40,7 @@ The folder consists of Redux stores
 
 ## Components documentation
 ### Todos
-Base component wrapping all the Todo App components
+The base component wrapping all the Todo App components
 
 #### Props
 | Prop      | Required    | Data type     | Description
