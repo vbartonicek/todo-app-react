@@ -1,4 +1,4 @@
-import { Map } from 'immutable';
+import {Map} from 'immutable';
 import {todoItems, categoryItems} from '../data/todos';
 
 const defaultActiveCategory = '';

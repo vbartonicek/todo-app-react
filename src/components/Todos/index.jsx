@@ -44,7 +44,7 @@ function filterTodos(allTodoItems, selectedCategory) {
 const Todos = ({todoItems, activeCategory}) => {
     const filteredTodos = filterTodos(todoItems, activeCategory);
 
-    return(
+    return (
         <StyledTodos>
             <LeftWrapper>
                 {!filteredTodos.size && <StyledDiv>No Todos available</StyledDiv>}
@@ -54,7 +54,7 @@ const Todos = ({todoItems, activeCategory}) => {
                 <NewItemForm/>
             </LeftWrapper>
             <RightWrapper>
-                <FilterSelect />
+                <FilterSelect/>
             </RightWrapper>
         </StyledTodos>
     )

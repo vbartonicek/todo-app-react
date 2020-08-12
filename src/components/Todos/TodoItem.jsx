@@ -15,7 +15,6 @@ const StyledItem = styled.div`
   border-radius: 0.2rem;
   word-break: break-all;
 
-
   input[type="checkbox"] {
     margin-right: 1rem;
     cursor: pointer;
@@ -38,17 +37,18 @@ const StyledTaskLabel = styled.span`
   width: calc(70% - 1rem);
 `;
 
-function TodoItem(props) {
-    const {item, toggleItem} = props;
-
+const TodoItem = ({item, toggleItem}) => {
     return (
         <StyledItem>
-            <input type="checkbox" checked={item.get('checked')}
-                   onChange={() => toggleItem(item.get('id'), !item.get('checked'))}/>
+            <input
+                type="checkbox"
+                checked={item.get('checked')}
+                onChange={() => toggleItem(item.get('id'), !item.get('checked'))}
+            />
             <StyledTaskLabel>{item.get('text')}</StyledTaskLabel>
             <StyledCategoryLabel>{item.get('category')}</StyledCategoryLabel>
         </StyledItem>
-    );
+    )
 }
 
 TodoItem.propTypes = {

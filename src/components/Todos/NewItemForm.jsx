@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
@@ -44,28 +44,12 @@ const StyledForm = styled.form`
   }
 `;
 
-class NewItemForm extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = {
-            task: '',
-            category: ''
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+const NewItemForm = ({addItem, addCategory}) => {
+    const handleChange = (event) => {
+        const {name, value} = event.target;
+        setState({...state, [name]: value});
     }
-
-    // Handle any input field change
-    handleChange(event) {
-        const target = event.target;
-        const state = this.state;
-        state[target.name] = target.value;
-        this.setState({state});
-    }
-
-    // Handle form's submit
-    handleSubmit(event) {
+    const handleSubmit = (event) => {
         event.preventDefault();
         const target = event.target;
         const task = target['task'].value;
@@ -73,26 +57,25 @@ class NewItemForm extends React.PureComponent {
         if (!task || !category) return;
 
         // Reset form's state
-        this.setState({
+        setState({
             task: '',
             category: ''
         });
 
-        this.props.addItem(task, category);
-        this.props.addCategory(category);
+        addItem(task, category);
+        addCategory(category);
     }
 
-    render() {
-        const {task, category} = this.state;
-        return (
-            <StyledForm onSubmit={this.handleSubmit}>
-                <input type="text" name="task" value={task} placeholder="task" onChange={this.handleChange}/>
-                <input type="text" name="category" value={category} placeholder="category"
-                       onChange={this.handleChange}/>
-                <button type="submit">+</button>
-            </StyledForm>
-        );
-    }
+    const [state, setState] = useState({task: '', category: ''})
+
+    return (
+        <StyledForm onSubmit={handleSubmit}>
+            <input type="text" name="task" value={state.task} placeholder="task" onChange={handleChange}/>
+            <input type="text" name="category" value={state.category} placeholder="category"
+                   onChange={handleChange}/>
+            <button type="submit">+</button>
+        </StyledForm>
+    )
 }
 
 NewItemForm.propTypes = {

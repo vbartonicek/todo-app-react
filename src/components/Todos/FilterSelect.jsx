@@ -23,9 +23,7 @@ const customStyles = {
     }),
 };
 
-function FilterSelect(props) {
-    const {categories, activeCategory, setActiveCategory} = props;
-
+const FilterSelect = ({categories, activeCategory, setActiveCategory}) => {
     // React-select requires array of <label:string, value:string>
     const options = [];
 
@@ -52,7 +50,7 @@ function FilterSelect(props) {
             placeholder="Filter category"
             styles={customStyles}
         />
-    );
+    )
 }
 
 FilterSelect.propTypes = {
@@ -64,6 +62,6 @@ FilterSelect.propTypes = {
 export default connect(
     ({categories, activeCategory}) => ({categories: categories, activeCategory: activeCategory}),
     (dispatch) => ({
-            setActiveCategory: (activeCategory) => dispatch(setActiveCategory(activeCategory))
+        setActiveCategory: (activeCategory) => dispatch(setActiveCategory(activeCategory))
     })
 )(FilterSelect);
