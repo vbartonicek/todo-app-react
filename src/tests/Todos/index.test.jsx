@@ -27,22 +27,22 @@ describe('filterTodos', () => {
 
     const expected4 = List([]);
 
-    it('Test 1 - Category filter return expected items', () => {
+    it('Test 1 - Category filter returns expected items', () => {
         const functionResult = wrapper.instance().filterTodos(todoItems, 'home');
         expect(functionResult).toMatchObject(expected1);
     });
 
-    it('Test 2 - Category filter return expected items', () => {
+    it('Test 2 - Category filter returns expected items', () => {
         const functionResult = wrapper.instance().filterTodos(todoItems, 'work');
         expect(functionResult).toMatchObject(expected2);
     });
 
-    it('Test 2 - Empty category filter return all items', () => {
+    it('Test 2 - Empty category filter returns all items', () => {
         const functionResult = wrapper.instance().filterTodos(todoItems, '');
         expect(functionResult).toMatchObject(expected3);
     });
 
-    it('Test 3 - Not existing category return zero items', () => {
+    it('Test 3 - Not existing category returns zero items', () => {
         const functionResult = wrapper.instance().filterTodos(todoItems, 'nothing');
         expect(functionResult).toMatchObject(expected4);
     });
