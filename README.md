@@ -1,10 +1,97 @@
+# Todo app in React using Redux
+
+## Quickstart
+Run `npm install`
+and then `npm run start`
+
+## Input data
+
+The initial data are located and documented in /src/data.
+
+## Instances
+
+The projects consist of two instances:
+- Instance 1 (initial data from the assignment)
+- Instance 2 (empty instance without initial data)
+
+## Project structure
+
+## /src/actions
+The folder consists of Redux actions
+
+### /src/components
+React components are located in this folder.
+
+The table component tree has following structure
+- Todos
+    - FilterSelect
+    - NewItemForm
+    - TodoItem
+
+## /src/data
+The folder consists of initial data
+
+## /src/reducers
+The folder consists of Redux reducers
+
+## /src/store
+The folder consists of Redux stores
+
+---
+
+## Components documentation
+### Todos
+Base component wrapping all the Todo App components
+
+#### Props
+| Prop      | Required    | Data type     | Description
+|-----------|-------------|---------------|------------|
+| todoItems       | optional      | ImmutablePropTypes.list  | List of Todo items
+| activeCategory       | optional      | PropTypes.string  | Filtered category
+#### Functions
+- `filterTodos(allTodoItems , selectedCategory) (): ImmutablePropTypes.list` - Returns filtered list of todo items based on given category
+
+
+### FilterSelect
+Stateless component wrapping the react-select component
+
+#### Props
+| Prop      | Required    | Data type     | Description
+|-----------|-------------|---------------|------------|
+| categories      | optional      | ImmutablePropTypes.set  | Set of existing categories
+| activeCategory       | optional      | PropTypes.string  | Filtered category
+| setActiveCategory      | required      | PropTypes.func  | Redux action to set new filtered category
+
+### NewItemForm
+Component representing form to add a new todo item
+
+#### Props
+| Prop      | Required    | Data type     | Description
+|-----------|-------------|---------------|------------|
+| addItem      | required      | PropTypes.func  | Redux action to add new todo item
+| addCategory      | required      | PropTypes.func  | Redux action to add new category
+#### Functions
+- `handleChange(event) (): void` - Handles input field change and updates component's state
+- `handleSubmit(event) (): void` - Handles form submit and calls addItem and addCategory actions
+
+### TodoItem
+Stateless component to render a single todo item.
+
+#### Props
+| Prop      | Required    | Data type     | Description
+|-----------|-------------|---------------|------------|
+| item      | required      | ImmutablePropTypes.map.isRequired  | Map of a single todo item properties
+| toggleItem       | required      | PropTypes.func.isRequired  | Handles change of checkbox state and calls the toggleItem action
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm run start`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -12,12 +99,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm build`
+### `npm run build`
 
 Builds the app for production to the `build` folder.<br />
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -27,7 +109,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm eject`
+### `npm run eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
@@ -37,32 +119,11 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
+### `npm run lint`
+Runs ESLint with --fix parameter to check and fix all files with .jsx,ts and .tsx extensions in src folder.
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

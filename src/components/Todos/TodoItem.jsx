@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {connect} from "react-redux";
 import {toggleItem} from "../../actions/actions";
+import ImmutablePropTypes from "react-immutable-proptypes";
 
 const StyledItem = styled.div`
   display: flex;
@@ -52,7 +53,7 @@ const TodoItem = ({item, toggleItem}) => {
 }
 
 TodoItem.propTypes = {
-    item: PropTypes.object,
+    item: ImmutablePropTypes.map.isRequired,
     toggleItem: PropTypes.func.isRequired,
 };
 

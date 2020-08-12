@@ -56,7 +56,7 @@ const FilterSelect = ({categories, activeCategory, setActiveCategory}) => {
 FilterSelect.propTypes = {
     categories: ImmutablePropTypes.set,
     activeCategory: PropTypes.string,
-    setActiveCategory: PropTypes.func,
+    setActiveCategory: PropTypes.func.isRequired,
 };
 
 export default connect(
